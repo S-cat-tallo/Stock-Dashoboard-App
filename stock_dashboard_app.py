@@ -19,16 +19,26 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # ------------------------- USER FILTERS -------------------------
-sector = st.selectbox("Select Sector", ["All", "Technology", "Healthcare", "Financial", "Consumer Goods", "Energy"])
+sector_map = {
+    "All": None,
+    "Technology": "sec_technology",
+    "Healthcare": "sec_healthcare",
+    "Financial": "sec_financial",
+    "Consumer Goods": "sec_consumergoods",
+    "Energy": "sec_energy"
+}
+selected_sector_label = st.selectbox("Select Sector", list(sector_map.keys()))
+selected_sector_key = sector_map[selected_sector_label]
 adr_threshold = st.slider("Min ADR % (Average Daily Range % over 20 days)", 0.0, 30.0, 5.0, step=0.5)
 
 # ------------------------- FETCH DATA -------------------------
 @st.cache_data(show_spinner=True)
 def get_finviz_data(sector_filter):
     screener = Overview()
-    filters = {}
-    if sector_filter != "All":
-        filters = {'sector': sector_filter}
+     filters = {}
+if sector_filter:
+    filters['sector'] = sector_filter
+
     screener.set_filter(filters_dict=filters)
     df = screener.screener_view()
     return df
