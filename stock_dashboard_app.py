@@ -21,11 +21,17 @@ st.markdown("""
 # ------------------------- USER FILTERS -------------------------
 sector_map = {
     "All": None,
-    "Technology": "sec_technology",
-    "Healthcare": "sec_healthcare",
-    "Financial": "sec_financial",
-    "Consumer Goods": "sec_consumergoods",
-    "Energy": "sec_energy"
+    "Basic Materials": "Basic Materials",
+    "Communication Services": "Communication Services",
+    "Consumer Cyclical": "Consumer Cyclical",
+    "Consumer Defensive": "Consumer Defensive",
+    "Energy": "Energy",
+    "Financial": "Financial",
+    "Healthcare": "Healthcare",
+    "Industrials": "Industrials",
+    "Real Estate": "Real Estate",
+    "Technology": "Technology",
+    "Utilities": "Utilities"
 }
 selected_sector_label = st.selectbox("Select Sector", list(sector_map.keys()))
 selected_sector_key = sector_map[selected_sector_label]
@@ -108,6 +114,4 @@ if ticker_input:
         st.markdown(f"[View full FinViz page →](https://finviz.com/quote.ashx?t={ticker_input})")
     except:
         st.warning("Invalid ticker or chart not available.")
-
-
 
