@@ -35,15 +35,23 @@ adr_threshold = st.slider("Min ADR % (Average Daily Range % over 20 days)", 0.0,
 # ------------------------- FETCH DATA -------------------------
 @st.cache_data(show_spinner=True)
 def get_finviz_data(sector_filter):
-    screener = Overview()
-    filters = {}
-    if sector_filter:
-        filters['sector'] = sector_filter
-    screener.set_filter(filters_dict=filters)
-    df = screener.screener_view()
-    return df
+    try:
+        screener = Overview()
+        filters = {}
+        if sector_filter:
+            filters['sector'] = sector_filter
+        screener.set_filter(filters_dict=filters)
+        df = screener.screener_view()
+        return df
+    except Exception as e:
+        st.error(f"Failed to fetch Finviz data: {e}")
+        return pd.DataFrame()
 
 raw_data = get_finviz_data(selected_sector_key)
+
+# Exit early if Finviz fetch fails
+if raw_data.empty:
+    st.stop()
 
 # ------------------------- FETCH HISTORICAL METRICS -------------------------
 def calculate_atr_adr_dollarvol(symbol):
@@ -97,6 +105,10 @@ if ticker_input:
     try:
         chart_url = f"https://finviz.com/chart.ashx?t={ticker_input}&ty=c&ta=1&p=d&s=l"
         st.image(chart_url, caption=f"FinViz chart for {ticker_input.upper()}", use_column_width=True)
+        st.markdown(f"[View full FinViz page →](https://finviz.com/quote.ashx?t={ticker_input})")
+    except:
+        st.warning("Invalid ticker or chart not available.")
+
         st.markdown(f"[View full FinViz page →](https://finviz.com/quote.ashx?t={ticker_input})")
     except:
         st.warning("Invalid ticker or chart not available.")
