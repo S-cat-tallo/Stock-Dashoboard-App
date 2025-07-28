@@ -29,21 +29,21 @@ sector_map = {
 }
 selected_sector_label = st.selectbox("Select Sector", list(sector_map.keys()))
 selected_sector_key = sector_map[selected_sector_label]
+
 adr_threshold = st.slider("Min ADR % (Average Daily Range % over 20 days)", 0.0, 30.0, 5.0, step=0.5)
 
 # ------------------------- FETCH DATA -------------------------
 @st.cache_data(show_spinner=True)
 def get_finviz_data(sector_filter):
     screener = Overview()
-     filters = {}
-if sector_filter:
-    filters['sector'] = sector_filter
-
+    filters = {}
+    if sector_filter:
+        filters['sector'] = sector_filter
     screener.set_filter(filters_dict=filters)
     df = screener.screener_view()
     return df
 
-raw_data = get_finviz_data(sector)
+raw_data = get_finviz_data(selected_sector_key)
 
 # ------------------------- FETCH HISTORICAL METRICS -------------------------
 def calculate_atr_adr_dollarvol(symbol):
@@ -100,3 +100,4 @@ if ticker_input:
         st.markdown(f"[View full FinViz page →](https://finviz.com/quote.ashx?t={ticker_input})")
     except:
         st.warning("Invalid ticker or chart not available.")
+
