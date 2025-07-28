@@ -64,7 +64,7 @@ def calculate_atr_adr_dollarvol(symbol):
         adr_pct = ((data['High-Low'] / data['Close']).rolling(window=20).mean() * 100).iloc[-1]
         avg_dollar_vol = (data['Close'] * data['Volume']).rolling(window=20).mean().iloc[-1]
         return round(adr_pct, 2), round(atr, 2), round(avg_dollar_vol, 2)
-    except:
+    except Exception:
         return None, None, None
 
 # ------------------------- PROCESS DATA -------------------------
@@ -109,7 +109,4 @@ if ticker_input:
     except:
         st.warning("Invalid ticker or chart not available.")
 
-        st.markdown(f"[View full FinViz page →](https://finviz.com/quote.ashx?t={ticker_input})")
-    except:
-        st.warning("Invalid ticker or chart not available.")
 
