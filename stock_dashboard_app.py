@@ -39,7 +39,7 @@ def get_finviz_data(sector_filter):
         screener = Overview()
         filters = {}
         if sector_filter:
-            filters['sector'] = sector_filter
+            filters['Sector'] = sector_filter
         screener.set_filter(filters_dict=filters)
         df = screener.screener_view()
         return df
@@ -108,5 +108,6 @@ if ticker_input:
         st.markdown(f"[View full FinViz page →](https://finviz.com/quote.ashx?t={ticker_input})")
     except:
         st.warning("Invalid ticker or chart not available.")
+
 
 
